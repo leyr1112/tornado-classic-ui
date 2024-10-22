@@ -35,27 +35,29 @@ async function saveEncryptedNote(netId) {
     netId,
     type: 'EncryptedNote',
     events: encryptedEvents,
-    fromBlock: cachedEvents.lastBlock + 1,
+    fromBlock: cachedEvents.lastBlock * 1 + 1,
     contractAttrs: [ABI, contractAddress]
   })
 
   console.log('Encrypted note', netId, encryptedEvents.length)
 
   encryptedEvents = encryptedEvents.reduce((acc, curr) => {
-    if (curr.returnValues.encryptedNote) {
+    if (curr.data.encryptedNote) {
       acc.push({
-        txHash: curr.transactionHash,
-        blockNumber: Number(curr.blockNumber),
-        encryptedNote: curr.returnValues.encryptedNote
+        txHash: curr.transaction_hash,
+        blockNumber: Number(curr.block_number),
+        encryptedNote: curr.data.encryptedNote
       })
     }
     return acc
   }, [])
 
   let freshEvents = cachedEvents.events.concat(encryptedEvents)
+  console.log('debug before', cachedEvents.length, encryptedEvents.length, freshEvents.length)
 
   freshEvents = uniqBy(freshEvents, 'encryptedNote').sort((a, b) => b.blockNumber - a.blockNumber)
 
+  console.log('debug after', freshEvents.length)
   const eventsJson = JSON.stringify(freshEvents, null, 2) + '\n'
   fs.writeFileSync(`${EVENTS_PATH}${name}`, eventsJson)
 }

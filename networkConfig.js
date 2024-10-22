@@ -28,6 +28,10 @@ export default {
     networkName: 'Ethereum Mainnet',
     deployedBlock: 9116966,
     rpcUrls: {
+      Ankr: {
+        name: 'Ankr',
+        url: `https://rpc.ankr.com/eth`
+      },
       Infura: {
         name: 'Infura',
         url: `https://mainnet.infura.io/v3/${INFURA_KEY}`

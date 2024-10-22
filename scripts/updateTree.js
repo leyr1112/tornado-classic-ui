@@ -14,7 +14,7 @@ const TREES_PATH = './static/trees/'
 const EVENTS_PATH = './static/events/'
 
 const EVENTS = ['deposit']
-const enabledChains = ['1']
+const enabledChains = ['1', '56']
 let mimcHash
 
 const trees = {
@@ -61,7 +61,7 @@ async function createTree(netId) {
     const { currencyName, tokens, deployedBlock } = networkConfig[`netId${netId}`]
 
     const currName = currencyName.toLowerCase()
-    const { instanceAddress: CONTRACTS } = tokens.eth
+    const { instanceAddress: CONTRACTS } = tokens.bnb
 
     for (const type of EVENTS) {
       for (const [instance] of Object.entries(CONTRACTS)) {
